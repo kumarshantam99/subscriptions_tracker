@@ -16,16 +16,16 @@ export default function Home({initialSubs,user}) {
     setSubs(initialSubs)
   },[])
 
-  console.log(initialSubs)
+  
   return (
     <div >
       <Head>
         <title>Subscriptions Tracker App</title>
         
       </Head>
-      <Navbar user={user} />
+      <Navbar className="navbar" user={user} />
 
-      <main >
+      <main className="px-4">
         
         <br/>
         {user && (
@@ -39,7 +39,9 @@ export default function Home({initialSubs,user}) {
           </>
         )}
        
-        
+        {
+          !user&&<p className="text-2xl text-center mb-4 py-4">Log in to save your subscriptions</p>
+        }
       </main>
 
       
@@ -49,9 +51,11 @@ export default function Home({initialSubs,user}) {
 
 export async function getServerSideProps(context){
   const session=await auth0.getSession(context.req)
+  let subs=[]
+  if(session?.user){
+    subs=await table.select({filterByFormula: `userId = '${session.user.sub}'`}).firstPage()
+  }
   
-  try {
-    const subs=await table.select({}).firstPage()
   return {
     props:{
       initialSubs:minifyRecords(subs),
@@ -59,15 +63,6 @@ export async function getServerSideProps(context){
     }
   }
     
-  } catch (error) {
-    console.error(err)
-    return {
-      props:{
-        err:"AHHH WTF!!!"
-      }
-    }
-    
-  }
   
 
 }

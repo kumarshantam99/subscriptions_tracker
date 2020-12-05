@@ -33,12 +33,12 @@ const SubsProvider=({children})=>{
     }
     const updateSubs=async(updatedSub)=>{
         try {
-            const res=await fetch('/api/updateSubs',{
+            await fetch('/api/updateSubs',{
                 method:'PUT',
                 body:JSON.stringify(updatedSub),
-                headers:{'Content-Type':'application/json'}
+                headers:{'content-type':'application/json'}
             })
-            await res.json()
+            
             setSubs((prevSubs)=>{
                 const existingSubs=[...prevSubs]
                 const existingSub=existingSubs.find(subscription=>subscription.id===updatedSub.id)

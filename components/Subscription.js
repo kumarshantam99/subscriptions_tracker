@@ -15,6 +15,7 @@ export default function Subscription({subscription}) {
         updateSubs(updatedSub)
 
     }
+    console.log(subscription)
     return (
         <div>
             <li className="bg-white flex items-center shadow-lg rounded-lg my-2 py-2 px-4 ">
